@@ -1,0 +1,24 @@
+{
+  "name": "vue-demo",
+  "version": "1.0.0",
+  "description": "to build my-demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/zenglincient/vue-demo.git"
+  },
+  "keywords": [
+    "vue",
+    "demo",
+    "webpack"
+  ],
+  "author": "jaze.zeng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zenglincient/vue-demo/issues"
+  },
+  "homepage": "https://github.com/zenglincient/vue-demo#readme"
+}
