@@ -4,6 +4,7 @@
   "description": "to build my-demo",
   "main": "index.js",
   "scripts": {
+    "dev": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +21,15 @@
   "bugs": {
     "url": "https://github.com/zenglincient/vue-demo/issues"
   },
-  "homepage": "https://github.com/zenglincient/vue-demo#readme"
+  "homepage": "https://github.com/zenglincient/vue-demo#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-loader": "^7.1.5"
+  }
 }
