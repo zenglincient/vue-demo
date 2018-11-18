@@ -30,47 +30,31 @@ let babelLoaderOptions = {
   babelrc: false,
 }
 
-let scssLoaderOptions = {
-  fallback: 'style-loader', // 备选项
-  use: [{
-    loader: 'css-loader',
-    options: {
-      url: false,
-      sourceMap: true
-    }
-  }, {
-    loader: 'postcss-loader',
-    options: {
-      config: {
-        plugins: [
-          require('postcss-smart-import')({}),
-          require('precss')({}),
-          require('autoprefixer')({
-            browsers: ['> 1%', 'last 5 versions', 'Firefox >= 20', 'iOS >= 7',
-              /** @see https://github.com/postcss/autoprefixer/issues/776 */
-              'safari >= 6'
-            ]
-          })
-        ]
-      }
-    }
-  }, {
-    loader: 'sass-loader',
-    options: {
-      sourceMap: true,
-      data: '$ASSETS_URL: "' +
-        config.paths.assetsURLCSS +
-        '"; $STATIC_FILES_HOST: "' +
-        config.paths.staticFilesHost +
-        '"; $DEPLOY_TAG: "' +
-        config.deployTag +
-        '";',
-    }
-  }]
-}
-
-let vueScssLoaderOptions = Object.assign({}, scssLoaderOptions);
-  vueScssLoaderOptions.fallback = 'vue-style-loader';
+let scssLoader = [{
+  loader: 'css-loader',
+  options: {
+    url: false,
+    sourceMap: true
+  }
+}, {
+  loader: 'postcss-loader',
+  options: {
+    sourceMap: true,
+    config: path.join(__dirname, 'postcss.config.js'),
+  }
+}, {
+  loader: 'sass-loader',
+  options: {
+    sourceMap: true,
+    data: '$ASSETS_URL: "' +
+      config.paths.assetsURLCSS +
+      '"; $STATIC_FILES_HOST: "' +
+      config.paths.staticFilesHost +
+      '"; $DEPLOY_TAG: "' +
+      config.deployTag +
+      '";',
+  }
+}]
 
 let basePlugins = [
   // 暂时不使用 ModuleConcatenationPlugin 作用域提升插件, 因为会对 webpack dev 模式造成影响
@@ -132,7 +116,10 @@ module.exports = {
         loader: 'vue-loader', // 使用 vue loader
         options: {
           loader: {
-            scss: ExtractTextPlugin.extract(vueScssLoaderOptions),
+            scss: ExtractTextPlugin.extract({
+              fallback: 'vue-style-loader',
+              use: [...scssLoader]
+            }),
             js: {
               loader: 'babel-loader',
               options: babelLoaderOptions,
@@ -143,32 +130,8 @@ module.exports = {
     }, {
       test: /\.(scss|css)$/,
       use: ExtractTextPlugin.extract({
-        fallback: 'style-loader', // 备选项
-        use: [{
-          loader: 'css-loader',
-          options: {
-            url: false,
-            sourceMap: true
-          }
-        }, {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: true,
-            config: path.join(__dirname, 'postcss.config.js'),
-          }
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true,
-            data: '$ASSETS_URL: "' +
-              config.paths.assetsURLCSS +
-              '"; $STATIC_FILES_HOST: "' +
-              config.paths.staticFilesHost +
-              '"; $DEPLOY_TAG: "' +
-              config.deployTag +
-              '";',
-          }
-        }]
+        fallback: 'style-loader',
+        use: [...scssLoader]
       })
     }, {
       test: /\.art$/,
